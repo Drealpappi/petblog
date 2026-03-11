@@ -142,7 +142,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Default primary key field type
 # Django Security
 DEBUG=True
-SECRET_KEY='django-insecure-q(gw2a9u0p&-2x%fn0lz758kn0f2e^6+oh26o5mv%=qc#r+e!k'
+SECRET_KEY= os.getenv('SECRET_KEY')
 
 # PostgreSQL Database Settings
 DB_NAME= os.getenv('DB_NAME', 'petblog')
