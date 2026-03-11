@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - The Pet Chronicles{% endblock %}
+
+{% block content %}
+<section class="split-screen">
+    <div class="split-left">
+        <div class="brand-content">
+            <h1 class="brand-title">The Pet Chronicles</h1>
+            <p class="brand-subtitle">
+                Bridging the gap between heart-warming pet stories and the rigorous world of veterinary research.
+            </p>
+            
+            <div class="brand-quote">
+                "Every Pet has a story, and every Story has a Scientific Heart."
+            </div>
+
+            <div class="brand-stats">
+                <div>Microbiology</div>
+                <div>Backend</div>
+                <div>Public Health</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="split-right">
+        <div class="auth-container glass-effect">
+            <h2 class="auth-headline">Our Mission</h2>
+            <p class="text-body" style="margin-bottom: 1.5rem;">
+                Founded by an aspiring backend developer and academic researcher, <strong>The Pet Chronicles</strong> 
+                is more than just a blog. It is a digital library where the love for animals meets the 
+                precision of science.
+            </p>
+
+            <h3 style="font-family: 'Fraunces', serif; margin-bottom: 0.5rem; color: var(--dark);">What We Explore</h3>
+            <ul class="tips-list">
+                <li><strong>Narrative Stories:</strong> Celebrating the bond with our furry and feathered friends.</li>
+                <li><strong>Scientific Insight:</strong> Exploring veterinary microbiology and poultry health.</li>
+                <li><strong>Public Health:</strong> Understanding the bacterial prevalence that affects us all.</li>
+            </ul>
+
+            <div class="auth-footer" style="margin-top: 2rem;">
+                <p>Ready to join the community?</p>
+                <a href="{% url 'register' %}" class="btn-primary" style="margin-top: 1rem; text-decoration: none; display: block;">Join the Journey</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

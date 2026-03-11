@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container glass-effect" style="margin: 4rem auto; max-width: 600px;">
+        <h1 class="auth-headline">Your Profile</h1>
+        <p class="auth-subheadline">Manage your account details and role.</p>
+
+        <div class="profile-details" style="margin-top: 2rem;">
+            <div class="form-group">
+                <label class="role-label">Username</label>
+                <p class="brand-subtitle">{{ user.username }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="role-label">Email Address</label>
+                <p class="text-body">{{ user.email }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="role-label">Your Role</label>
+                <div class="role-options">
+                    <div class="role-card" style="border-color: var(--accent); background: var(--accent-soft);">
+                        <span class="role-icon">
+                            {% if user.profile.is_author %}✍️{% else %}🐾{% endif %}
+                        </span>
+                        <span class="role-title">
+                            {% if user.profile.is_author %}Author{% else %}Reader{% endif %}
+                        </span>
+                        <p class="role-desc">
+                            {% if user.profile.is_author %}
+                                You can create and manage pet stories.
+                            {% else %}
+                                You are a valued member of our reading community.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-footer">
+            <a href="{% url 'home' %}" class="btn-primary" style="text-decoration: none; display: block; text-align: center;">Back to Feed</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

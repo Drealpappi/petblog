@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Join The Pet Chronicles – Register{% endblock %}
+
+{% block content %}
+<div class="split-screen">
+    <!-- Left side: Visual branding -->
+    <div class="split-left">
+        <div class="brand-content">
+            <h1 class="brand-title">🐾 Join the Pack</h1>
+            <p class="brand-subtitle">Share your pet stories, connect with fellow animal lovers, and get daily doses of cuteness.</p>
+            <div class="brand-testimonials">
+                <div class="testimonial">
+                    “This community is pure joy – my dog now has fans worldwide!”
+                    <span>— Sarah & Max</span>
+                </div>
+                <div class="testimonial">
+                    “The best place to document my cat’s adventures. Highly recommended.”
+                    <span>— Alex & Whiskers</span>
+                </div>
+            </div>
+            <div class="brand-stats">
+                <div><strong>10k+</strong> stories</div>
+                <div><strong>5k+</strong> happy pets</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="split-right">
+        <div class="auth-container glass-effect">
+            <h2 class="auth-headline">Create your account</h2>
+            <p class="auth-subheadline">It’s free and takes a minute.</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group floating-label">
+                    <input type="text" name="username" id="id_username" placeholder=" " required>
+                    <label for="id_username">Username</label>
+                </div>
+
+                <div class="form-group floating-label">
+                    <input type="email" name="email" id="id_email" placeholder=" " required>
+                    <label for="id_email">Email</label>
+                </div>
+
+                <div class="form-group floating-label">
+                    <input type="password" name="password1" id="id_password1" placeholder=" " required>
+                    <label for="id_password1">Password</label>
+                </div>
+
+                <div class="form-group floating-label">
+                    <input type="password" name="password2" id="id_password2" placeholder=" " required>
+                    <label for="id_password2">Confirm password</label>
+                </div>
+
+                <div class="role-selector">
+                    <label class="role-label">I want to join as:</label>
+                    <div class="role-options">
+                        <label class="role-card">
+                            <input type="radio" name="is_author" value="False" checked>
+                            <span class="role-icon">📖</span>
+                            <span class="role-title">Reader</span>
+                            <span class="role-desc">Read & comment on stories</span>
+                        </label>
+                        <label class="role-card">
+                            <input type="radio" name="is_author" value="True">
+                            <span class="role-icon">✍️</span>
+                            <span class="role-title">Author</span>
+                            <span class="role-desc">Write & share pet stories</span>
+                        </label>
+                    </div>
+                </div>
+
+                {% if form.errors %}
+                    <div class="error-messages">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p class="error">{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn-primary btn-block">Create account →</button>
+
+                <p class="auth-footer">
+                    Already have an account? <a href="{% url 'login' %}">Log in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

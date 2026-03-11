@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome Back – The Pet Chronicles{% endblock %}
+
+{% block content %}
+<div class="split-screen">
+    <!-- Left side: Brand reinforcement (could be different image) -->
+    <div class="split-left">
+        <div class="brand-content">
+            <h1 class="brand-title">🐾 Welcome Back!</h1>
+            <p class="brand-subtitle">We missed you. Log in to continue sharing and discovering amazing pet stories.</p>
+            <div class="brand-quote">
+                “The bond with a pet is timeless – relive those moments here.”
+            </div>
+        </div>
+    </div>
+
+    <!-- Right side: Login form -->
+    <div class="split-right">
+        <div class="auth-container glass-effect">
+            <h2 class="auth-headline">Log in</h2>
+            <p class="auth-subheadline">Good to see you again.</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Username field -->
+                <div class="form-group floating-label">
+                    <input type="text" name="username" id="id_username" placeholder=" " required>
+                    <label for="id_username">Username</label>
+                </div>
+
+                <!-- Password field -->
+                <div class="form-group floating-label">
+                    <input type="password" name="password" id="id_password" placeholder=" " required>
+                    <label for="id_password">Password</label>
+                </div>
+
+                {% if form.errors %}
+                    <div class="error-messages">
+                        <p class="error">Invalid username or password.</p>
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn-primary btn-block">Log in →</button>
+
+                <p class="auth-footer">
+                    Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

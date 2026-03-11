@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pet Blog{% endblock %}</title>
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% load static %}
+    <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <div class="nav-container"> <div class="logo-container">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="The Pet Chronicles Logo" class="site-logo">
+                </a>
+                <span class="site-title">The Pet Chronicles</span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+
+                {% if user.is_authenticated %}
+                    {% if user.profile.is_author %}
+                        <li><a href="{% url 'create_post' %}" class="btn">Write a Story ✍️</a></li>
+                    {% else %}
+                        <li><span class="nav-welcome">Welcome, Reader! 🐾</span></li>
+                    {% endif %}
+                    
+                    <li><a href="{% url 'profile' %}">Profile ({{ user.username }})</a></li>
+                    <li>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link-btn">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+
+        </div> </nav>
+</header>
+
+    <main class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Pet Chronicles. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Logged Out – The Pet Chronicles{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <h2 class="logout-title">You've been logged out</h2>
+    <p class="logout-message">Thanks for visiting The Pet Chronicles. We hope to see you again soon!</p>
+    <a href="{% url 'login.html' %}" class="btn-primary">Log back in</a>
+</div>
+{% endblock %}

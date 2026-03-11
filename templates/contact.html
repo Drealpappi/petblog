@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - The Pet Chronicles{% endblock %}
+
+{% block content %}
+<section class="split-screen">
+    <div class="split-left">
+        <div class="brand-content">
+            <h1 class="brand-title">Get in Touch</h1>
+            <p class="brand-subtitle">
+                Have a question about my research on poultry farms or want to share a pet story? I'd love to hear from you.
+            </p>
+            
+            <div class="brand-stats" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+                <div>📍 Based in Ido LGA</div>
+                <div>📧 adelekanf7@gmail.com</div>
+            </div>
+            
+            <div class="brand-quote" style="margin-top: 3rem;">
+                "Connecting the community through data and shared stories."
+            </div>
+        </div>
+    </div>
+
+    <div class="split-right">
+        <div class="auth-container glass-effect">
+            <h2 class="auth-headline">Send a Message</h2>
+            <p class="auth-subheadline">I'll get back to you as soon as possible.</p>
+
+            <form method="post" action="{% url 'contact' %}">
+                {% csrf_token %}
+                
+                <div class="form-group floating-label">
+                    <input type="text" name="name" id="name" placeholder=" " required>
+                    <label for="name">Your Name</label>
+                </div>
+
+                <div class="form-group floating-label">
+                    <input type="email" name="email" id="email" placeholder=" " required>
+                    <label for="email">Your Email</label>
+                </div>
+
+                <div class="form-group floating-label">
+                    <textarea name="message" id="message" rows="5" placeholder=" " required></textarea>
+                    <label for="message">Your Message</label>
+                </div>
+
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,414 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap');
+
+:root {
+    --accent: #ff6b6b;         
+    --accent-soft: #fff0f0;
+    --dark: #1a1a1a;           
+    --gray-light: #f8f9fa;
+    --gray-mid: #e9ecef;
+    --text-body: #4a4a4a;
+    --radius-lg: 24px;
+    --radius-md: 12px;
+    --shadow-knuckles: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #ffffff;
+    color: var(--text-body);
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+.navbar {
+    padding: 1rem 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10x;
+    text-decoration: none;
+}
+
+.site-logo {
+    height: 70px;
+    width: auto;
+}
+
+.logo-container:hover .site-logo {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+.site-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row; 
+    gap: 2rem; 
+    list-style: none;          
+    align-items: center;       
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links li a {
+    position: relative;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--dark);
+    padding: 4px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--accent); 
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-links li a:hover {
+    color: var(--accent);
+    opacity: 1;
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+}
+.btn, .nav-link-btn {
+    background: var(--dark);
+    color: #fff !important;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn:hover, .nav-link-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.nav-welcome {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.split-screen {
+    display: flex;
+    min-height: calc(100vh - 85px);
+}
+
+.split-left {
+    flex: 1.2;
+    background: linear-gradient(135deg, var(--accent-soft) 0%, #ffffff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+}
+
+.split-right {
+    flex: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    background: #ffffff;
+}
+
+.create-post-container {
+    max-width: 700px;
+    margin: 4rem auto;
+    padding: 3rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-knuckles);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control, input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius-md);
+    background: var(--gray-light);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.footer {
+    text-align: center;
+    padding: 3rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--gray-mid);
+    color: #888;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .split-screen {
+        flex-direction: column;
+    }
+    
+    .split-left {
+        display: none; 
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+.tips-list li {
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px dashed var(--gray-mid);
+}
+.tips-list li:last-child {
+    border-bottom: none;
+}
+
+.brand-quote {
+    font-style: italic;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+    margin-top: 2rem;
+}
+
+.form-group.floating-label textarea {
+    width: 100%;
+    padding: 1.2rem 1rem 0.5rem;
+    border: 1px solid var(--gray-mid);
+    border-radius: var(--radius-md);
+    background: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.form-group.floating-label textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.file-label {
+    display: inline-block;
+    background: var(--gray-light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--dark);
+    border: 1px solid var(--gray-mid);
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+}
+
+.file-label:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+.file-input {
+    display: none; 
+}
+
+.image-preview {
+    margin-top: 1rem;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.preview-img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+}
+
+.role-selector {
+    margin: 2rem 0;
+}
+
+.role-label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.role-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.role-card {
+    flex: 1;
+    background: var(--gray-light);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.role-card:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+.role-card input[type="radio"] {
+    display: none;
+}
+
+.role-card input[type="radio"]:checked + .role-icon,
+.role-card input[type="radio"]:checked ~ .role-title,
+.role-card input[type="radio"]:checked ~ .role-desc {
+    color: var(--accent);
+}
+
+.role-card input[type="radio"]:checked + .role-icon {
+    transform: scale(1.1);
+}
+
+.role-card .role-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.role-card .role-title {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.role-card .role-desc {
+    font-size: 0.8rem;
+    color: var(--text-body);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255,107,107,0.3);
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-body);
+}
+
+.auth-footer a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.error-messages .error {
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    text-align: center;
+}
+
+.form-group.floating-label textarea:focus ~ label,
+.form-group.floating-label textarea:not(:placeholder-shown) ~ label {
+    top: 0.3rem;
+    font-size: 0.7rem;
+    color: var(--accent);
+}
