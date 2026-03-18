@@ -1,4 +1,5 @@
 from django.contrib import messages as django_messages
+from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
 from .models import ContactMessage
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Post
 from .models import Profile
+from .models import *
 from .forms import PostForm
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
@@ -72,6 +74,15 @@ def contact(request):
 
 def profile_view(request):
     return render(request, 'profile.html', {'user': request.user})
+
+def switch_roles(request):
+    if request.method=='pOST':
+        new_role = request.POST.get('role')
+        Profile = request.user.profile
+        Profile.role = new_role
+        Profile.save()
+        messages.success(request, f"Role choice updated to {new_role}!")
+    return redirect('home.html')
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)

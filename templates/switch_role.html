@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="role-selector">
+    <label class="role-label">You can Change Your Role Here</label>
+    <div class="role-options">
+        <label class="role-card">
+            <input type="radio" name="is_author" value="False" checked>
+            <span class="role-icon">📖</span>
+            <span class="role-title">Reader</span>
+            <span class="role-desc">Read & comment on stories</span>
+        </label>
+        <label class="role-card">
+            <input type="radio" name="is_author" value="True">
+            <span class="role-icon">✍️</span>
+            <span class="role-title">Author</span>
+            <span class="role-desc">Write & share pet stories</span>
+        </label>
+        </div>  
+    </div>
+{% endblock %}
