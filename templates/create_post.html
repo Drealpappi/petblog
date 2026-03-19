@@ -7,14 +7,19 @@
 <div class="split-screen">
     <div class="split-left">
         <div class="brand-content">
-            <h1 class="brand-title">✍️ Share Your Story</h1>
-            <p class="brand-subtitle">Every pet has a tale worth telling. Whether it's a funny anecdote, a heartwarming memory, or helpful tips—your words will delight our community.</p>
-            <ul class="tips-list">
-                <li>🐾 Choose a catchy title</li>
-                <li>🐾 Add a clear, high‑quality photo</li>
-                <li>🐾 Write from the heart</li>
-                <li>🐾 Keep it positive and respectful</li>
-            </ul>
+            <h1 class="auth-headline" style="font-size: 3rem;">Share Your Story</h1>
+            <p class="auth-subheadline">Every pet has a tale worth telling. Whether it's a funny anecdote, a heartwarming memory, or helpful tips—your words will delight our community.</p>
+            
+            <div class="tips-container">
+                <h3 style="font-family: 'Fraunces', serif; color: var(--dark); margin-bottom: 1rem;">Quick Storytelling Tips</h3>
+                <ul class="tips-list">
+                    <li>Choose a catchy title</li>
+                    <li>Add a clear, high‑quality photo</li>
+                    <li>Write from the heart</li>
+                    <li>Keep it positive and respectful</li>
+                </ul>
+            </div>
+
             <div class="brand-quote">
                 “The greatness of a nation and its moral progress can be judged by the way its animals are treated.” – Mahatma Gandhi
             </div>
@@ -22,7 +27,7 @@
     </div>
 
     <div class="split-right">
-        <div class="auth-container glass-effect" style="max-width: 600px;">
+        <div class="glass-effect" style="max-width: 600px; width: 100%;">
             <h2 class="auth-headline">Create a new post</h2>
             <p class="auth-subheadline">Fill in the details below</p>
 
@@ -33,30 +38,36 @@
                     <input type="text" name="title" id="id_title" placeholder=" " value="{{ form.title.value|default:'' }}" required>
                     <label for="id_title">Title</label>
                     {% if form.title.errors %}
-                        <div class="error-message">{{ form.title.errors.0 }}</div>
+                        <div class="error">{{ form.title.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="form-group floating-label">
-                    {% csrf_token %}
-
                     <textarea name="content" id="id_content" placeholder=" " rows="6" required>{{ form.content.value|default:'' }}</textarea>
                     <label for="id_content">Your story</label>
                     {% if form.content.errors %}
-                        <div class="error-message">{{ form.content.errors.0 }}</div>
+                        <div class="error">{{ form.content.errors.0 }}</div>
                     {% endif %}
                 </div>
 
                 <div class="form-group">
-                    {% csrf_token %}
-
-                    <label for="id_image" class="file-label">📷 Upload a photo (optional)</label>
-                    <input type="file" name="image" id="id_image" accept="image/*" class="file-input">
-                    <div id="image-preview" class="image-preview"></div>
-                    {% if form.image.errors %}
-                        <div class="error-message">{{ form.image.errors.0 }}</div>
-                    {% endif %}
-                </div>
+                    <label class="role-label">Story Cover Photo</label>
+                    <div class="upload-wrapper">
+                        <label for="image-upload" class="file-drop-zone">
+                            <span class="upload-icon">📸</span>
+                            <span class="upload-text">Click to upload a pet photo</span>
+                            <span class="upload-hint">JPG, PNG or WEBP (Max 5MB)</span>
+                            <input type="file" name="image" id="image-upload" class="file-input" accept="image/*">
+                        </label>
+                    </div>
+    
+                    <div id="image-preview-container" style="display: none; margin-top: 1.5rem;">
+                        <p style="font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; color: var(--accent);">Post Preview Cover:</p>
+                        <div class="post-image-wrapper">
+                            <img id="output-image" src="" alt="Preview">
+                        </div>
+                    </div>
+                </div>              
 
                 {% if form.non_field_errors %}
                     <div class="error-messages">
@@ -66,27 +77,27 @@
                     </div>
                 {% endif %}
 
-                <button type="submit" class="btn-primary btn-block">Publish story →</button>
+                <button type="submit" class="btn-primary" style="margin-top: 1rem;">Publish story →</button>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-// Simple image preview
-document.getElementById('id_image').addEventListener('change', function(e) {
-    const preview = document.getElementById('image-preview');
-    preview.innerHTML = '';
+document.getElementById('image-upload').addEventListener('change', function(e) {
     const file = e.target.files[0];
+    const container = document.getElementById('image-preview-container');
+    const output = document.getElementById('output-image');
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.classList.add('preview-img');
-            preview.appendChild(img);
+            output.src = event.target.result;
+            container.style.display = 'block';
         }
         reader.readAsDataURL(file);
+    } else {
+        container.style.display = 'none';
     }
 });
 </script>

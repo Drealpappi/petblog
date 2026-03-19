@@ -75,14 +75,14 @@ def contact(request):
 def profile_view(request):
     return render(request, 'profile.html', {'user': request.user})
 
-def switch_roles(request):
-    if request.method=='pOST':
-        new_role = request.POST.get('role')
-        Profile = request.user.profile
-        Profile.role = new_role
-        Profile.save()
-        messages.success(request, f"Role choice updated to {new_role}!")
-    return redirect('home.html')
+def switch_role_view(request):
+    if request.method == 'POST':
+        new_role = request.POST.get('role').upper()
+        profile = request.user.profile
+        profile.role = new_role
+        profile.save()
+        messages.success(request, f"Role successfully updated to {new_role}!")
+    return redirect('profile')
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <p class="post-content-preview">
+    {{ post.content|truncatewords:30 }}
+    </p>
     <title>{% block title %}Pet Blog{% endblock %}</title>
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +32,9 @@
 
                 {% if user.is_authenticated %}
                     {% if user.profile.is_author %}
-                        <li><a href="{% url 'create_post' %}" class="btn">Write a Story ✍️</a></li>
+                        <li><a href="{% url 'create_post' %}" class="btn">Write a Story</a></li>
                     {% else %}
-                        <li><span class="nav-welcome">Welcome, Reader! 🐾</span></li>
+                        <li><span class="nav-welcome">Welcome, Reader!</span></li>
                     {% endif %}
                     
                     <li><a href="{% url 'profile' %}">Profile ({{ user.username }})</a></li>

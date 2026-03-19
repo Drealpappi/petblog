@@ -22,7 +22,7 @@
                 <div class="role-options">
                     <div class="role-card" style="border-color: var(--accent); background: var(--accent-soft);">
                         <span class="role-icon">
-                            {% if user.profile.is_author %}✍️{% else %}🐾{% endif %}
+                            {% if user.profile.is_author %}{% else %}{% endif %}
                         </span>
                         <span class="role-title">
                             {% if user.profile.is_author %}Author{% else %}Reader{% endif %}
@@ -39,10 +39,33 @@
                 </div>
             </div>
         </div>
-        <a href="{% url 'switch_role.html' %}" class="btn-primary" style="text-decoration: none; display: block; text-align: center;">You can Change Your Role Here</a>
-        <div class="auth-footer">
-            <a href="{% url 'home' %}" class="btn-primary" style="text-decoration: none; display: block; text-align: center;">Back to Feed</a>
+       <div class="role-switcher-box" style="margin-top: 2.5rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <form action="{% url 'switch_role' %}" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+                {% csrf_token %}
+                <label class="role-label" style="text-align: center; font-weight: 600; color: var(--accent); letter-spacing: 0.5px;">
+                    SWITCH YOUR ACCOUNT ROLE
+                </label>
+                
+                <div class="select-wrapper" style="position: relative;">
+                    <select name="role" class="form-control" style="width: 100%; background: rgba(0, 0, 0, 0.2); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px; cursor: pointer; appearance: none; -webkit-appearance: none;">
+                        <option value="AUTHOR" {% if user.profile.role == 'AUTHOR' %}selected{% endif %} style="color: #333;"> Author (Create Stories)</option>
+                        <option value="READER" {% if user.profile.role == 'READER' %}selected{% endif %} style="color: #333;"> Reader (Explore Content)</option>
+                    </select>
+                    <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--accent);">▼</span>
+                </div>
+
+                <button type="submit" class="btn-primary" style="border: none; width: 100%; cursor: pointer; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                    Update Profile Role
+                </button>
+            </form>
+        </div>
+
+        <div class="auth-footer" style="margin-top: 1.5rem; text-align: center;">
+            <a href="{% url 'home' %}" class="back-link" style="text-decoration: none; color: rgba(255,255,255,0.6); font-size: 0.9rem; transition: color 0.3s;">
+                ← Back to Feed
+            </a>
         </div>
     </div>
 </div>
+
 {% endblock %}

@@ -16,17 +16,14 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=20, choices=USER_ROLES, default='READER')
-    
     is_author = models.BooleanField(default=False)
 
-    @receiver(post_save, sender=User)
-    def manage_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.get_or_create(user=instance)
+    def save(self, *args, **kwargs):
+        if self.role == 'AUTHOR':
+            self.is_author = True
         else:
-        # 2. Only save the profile if it already exists
-            if hasattr(instance, 'profile'):
-                instance.profile.save()
+            self.is_author = False
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

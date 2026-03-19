@@ -11,7 +11,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('profile/', views.profile_view, name='profile'),
     path('create_post/', views.create_post, name='create_post'),
-    path('switch_role/', views.switch_roles, name='switch_role'),
+    path('switch_role/', views.switch_role_view, name='switch_role'),
     # Added for post details
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
 ]

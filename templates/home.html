@@ -1,26 +1,45 @@
-{% extends "base.html" %}
-
-{% block title %}Home - Pet Blog{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<section class="hero">
-    <h1>Welcome to The Pet Chronicles</h1>
-    <p>Sharing stories about our furry, feathered, and scaled friends.</p>
-</section>
+<div class="container">
+    <header style="text-align: center; margin-bottom: 4rem;">
+        <h1 class="auth-headline" style="font-size: 3.5rem;">The Pet Chronicles</h1>
+        <p class="auth-subheadline">Discover heartwarming stories from our furry community</p>
+    </header>
 
-<div class="post-container">
-    {% for post in posts %}
+    <div class="post-grid">
+        {% for post in posts %}
         <article class="post-card">
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-img">
-            {% endif %}
-            <h2>{{ post.title }}</h2>
-            <p class="post-meta">By {{ post.author.username }} on {{ post.created_at|date:"M d, Y" }}</p>
-            <p>{{ post.content|truncatewords:30 }}</p>
-            <a href="{% url 'post_detail' post.id %}" class="read-more">Read More →</a>
+            <div class="post-image-wrapper">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% else %}
+                    <div style="width: 100%; height: 100%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 3rem;"></div>
+                {% endif %}
+            </div>
+
+            <div class="post-card-content">
+                <div class="post-card-meta">
+                    <span>{{ post.author.username }}</span> • 
+                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                </div>
+                
+                <a href="{% url 'post_detail' post.id %}" class="post-card-title">
+                    {{ post.title }}
+                </a>
+                
+                <p class="post-content-preview">
+                    {{ post.content|truncatewords:25 }}
+                </p>
+            </div>
+            
+            <div style="padding: 0 1.5rem 1.5rem;">
+                <a href="{% url 'post_detail' post.id %}" class="btn-primary" style="padding: 10px; font-size: 0.9rem;">Read Full Story</a>
+            </div>
         </article>
-    {% empty %}
-        <p>No pet stories yet. {% if user.profile.is_author %}<a href="{% url 'create_post' %}">Write the first one!</a>{% endif %}</p>
-    {% endfor %}
+        {% empty %}
+        <p style="text-align: center; grid-column: 1 / -1;">No stories shared yet. Be the first!</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
