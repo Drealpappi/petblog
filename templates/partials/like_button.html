@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+<div id="like-section-{{ post.id }}">
+    <button 
+        hx-post="{% url 'toggle_like' post.id %}" 
+        hx-target="#like-section-{{ post.id }}" 
+        hx-swap="outerHTML"
+        class="like-container border-0 {% if liked %}text-danger{% endif %}"
+    >
+        {% if liked %}
+            <i class="fas fa-heart"></i> {% else %}
+            <i class="far fa-heart"></i> {% endif %}
+        <span class="like-count">{{ like_count }}</span>
+    </button>
+</div>

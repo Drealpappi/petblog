@@ -7,14 +7,16 @@ from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Post
-from .models import Profile
-from .models import *
+from .models import Post, Profile, Comment, like
+from django.shortcuts import get_object_or_404, redirect
 from .forms import PostForm
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.db import transaction
+from .forms import CommentForm
 
 # Create your views here.
+@transaction.atomic
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -85,8 +87,49 @@ def switch_role_view(request):
     return redirect('profile')
 
 def post_detail(request, post_id):
-    post = Post.objects.get(id=post_id)
-    return render(request, 'post_detail.html', {'post': post})
+    post = get_object_or_404(Post, pk=post_id)
+    comments = post.comments.all().order_by('-created_at')
+    like_count = post.likes.count()
+    liked = False
+    if request.user.is_authenticated:
+        liked = post.likes.filter(user=request.user).exists()
+
+    if request.method == 'POST' and request.user.is_authenticated:
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post_detail', post_id=post.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, 'post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form,
+        'liked': liked,
+        'like_count': like_count 
+    })
+
+@login_required
+def toggle_like(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    like_qs = like.objects.filter(user= request.user, post=post)
+    if like_qs.exists():
+        like_qs.delete()
+        liked = False
+    else:
+        like.objects.create(user=request.user, post=post)
+        liked = True
+    context = {
+        'post': post,
+        'liked': liked,
+        'total_likes': post.likes.count()
+    }
+    return render(request, 'partials/like_button.html', context)
+
 
 
 @login_required

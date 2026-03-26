@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('create_post/', views.create_post, name='create_post'),
     path('switch_role/', views.switch_role_view, name='switch_role'),
+    path('like/<int:post_id>/', views.toggle_like, name='toggle_like'),
     # Added for post details
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
 ]

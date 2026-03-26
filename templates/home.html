@@ -20,8 +20,13 @@
 
             <div class="post-card-content">
                 <div class="post-card-meta">
-                    <span>{{ post.author.username }}</span> • 
-                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                    <span>✍️ {{ post.author.username }}</span> • 
+                    <span>{{ post.created_at|date:"M d" }}</span> •
+                    {% if user.is_authenticated %}
+                    <a href="post_detail.html" class="comment-count">
+                        💬 {{ post.comments.count }} Comment{{ post.comments.count|pluralize }}
+                    </a>
+                    {% endif %}
                 </div>
                 
                 <a href="{% url 'post_detail' post.id %}" class="post-card-title">

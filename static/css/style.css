@@ -576,3 +576,125 @@ select.form-control {
 .post-card:hover .post-image-wrapper img {
     transform: scale(1.1);
 }
+
+.comment-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-mid);
+}
+
+.comment-card {
+    background: var(--gray-light);
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--accent); /* Adds a nice branded "pop" */
+}
+
+.comment-author {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--dark);
+    margin-bottom: 5px;
+    display: block;
+}
+
+.comment-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.post-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.post-hero-wrapper {
+    width: 100%;
+    height: 500px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.post-hero-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.post-title-large {
+    font-family: 'Fraunces', serif;
+    font-size: 3.5rem;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+}
+
+.post-body-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-body);
+    margin-bottom: 4rem;
+    white-space: pre-wrap;
+}
+
+.comments-header {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.like-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); 
+    
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: white; 
+}
+
+.like-container:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.like-container i {
+    font-size: 1.2rem;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.text-danger i {
+    color: #ff4d4d;
+    transform: scale(1.2);
+}
+
+.like-count {
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.htmx-request {
+    opacity: 0.5;
+    pointer-events: none;
+}

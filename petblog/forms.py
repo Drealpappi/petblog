@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from petblog.models import Post, Profile
+from .models import Comment
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -19,19 +20,22 @@ class CustomUserCreationForm(UserCreationForm):
         label="I want to join as a:"
     )
 
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = UserCreationForm.Meta.fields + ('email',)
+class Meta(UserCreationForm.Meta):
+    model = User
+    fields = UserCreationForm.Meta.fields + ('email',)
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-
-        if commit:
-            user.save()
-            is_auth_choice = self.cleaned_data['is_author'] == 'True'
-            user.profile.is_author = is_auth_choice
-            user.profile.save()
-        return user
+def save(self, commit=True):
+    user = super().save(commit=False)
+    is_auth_choice = self.cleaned_data.get('is_author')
+    
+    if commit:
+        user.save()
+        from .models import Profile
+        profile, created = Profile.objects.get_or_create(user=user)
+        profile.role = 'AUTHOR' if is_auth_choice == 'True' else 'READER'
+        profile.save()
+        
+    return user
     
 class PostForm(forms.ModelForm):
 
@@ -41,4 +45,16 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter pet name or title'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tell the story...'}),
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'glass-input', # Matching your previous styling
+                'placeholder': 'Write a comment...',
+                'rows': 3
+            }),
         }
