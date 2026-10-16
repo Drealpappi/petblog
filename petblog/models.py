@@ -38,6 +38,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to='pet_photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name='liked_post', blank=True)
 
     def __str__(self):
         return self.title
@@ -55,8 +56,9 @@ class Comment(models.Model):
 # The like Model
 class like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='blog_likes')
     created_at = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         unique_together = ('user', 'post')

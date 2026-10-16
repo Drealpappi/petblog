@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <header style="text-align: center; margin-bottom: 4rem;">
+    <header style="text-align: center; margin: 4rem 0;">
         <h1 class="auth-headline" style="font-size: 3.5rem;">The Pet Chronicles</h1>
         <p class="auth-subheadline">Discover heartwarming stories from our furry community</p>
     </header>
@@ -14,36 +14,53 @@
                 {% if post.image %}
                     <img src="{{ post.image.url }}" alt="{{ post.title }}">
                 {% else %}
-                    <div style="width: 100%; height: 100%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 3rem;"></div>
+                    <div style="width: 100%; height: 100%; background: var(--accent-soft); display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3rem;">🐾</span>
+                    </div>
                 {% endif %}
             </div>
 
             <div class="post-card-content">
-                <div class="post-card-meta">
-                    <span>✍️ {{ post.author.username }}</span> • 
-                    <span>{{ post.created_at|date:"M d" }}</span> •
-                    {% if user.is_authenticated %}
-                    <a href="post_detail.html" class="comment-count">
-                        💬 {{ post.comments.count }} Comment{{ post.comments.count|pluralize }}
-                    </a>
-                    {% endif %}
+                <div class="post-card-meta" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span><strong>{{ post.author.username }}</strong></span> • 
+                        <span>{{ post.created_at|date:"M d" }}</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span title="Comments" style="font-size: 0.9rem; opacity: 0.8;">
+                            💬 {{ post.comments.count }}
+                        </span>
+    
+                        {% if user.is_authenticated %}
+                            {% if user in post.likes.all %}
+                            {% include 'partials/like_button.html' with post=post liked=True like_count=post.likes.count %}
+                            {% else %}
+                                {% include 'partials/like_button.html' with post=post liked=False like_count=post.likes.count %}
+                            {% endif %}
+                        {% else %}
+                            <span title="Likes" style="font-size: 0.9rem; opacity: 0.8;">
+                                🐾 {{ post.likes.count }}
+                            </span>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <a href="{% url 'post_detail' post.id %}" class="post-card-title">
                     {{ post.title }}
                 </a>
                 
-                <p class="post-content-preview">
-                    {{ post.content|truncatewords:25 }}
+                <p class="post-content-preview" style="color: var(--text-body); margin-bottom: 1.5rem;">
+                    {{ post.content|truncatewords:20 }}
                 </p>
             </div>
             
-            <div style="padding: 0 1.5rem 1.5rem;">
-                <a href="{% url 'post_detail' post.id %}" class="btn-primary" style="padding: 10px; font-size: 0.9rem;">Read Full Story</a>
+            <div style="padding: 0 1.5rem 1.5rem; margin-top: auto;">
+                <a href="{% url 'post_detail' post.id %}" class="btn-primary" style="padding: 10px; font-size: 0.9rem; text-decoration: none;">Read Full Story</a>
             </div>
         </article>
         {% empty %}
-        <p style="text-align: center; grid-column: 1 / -1;">No stories shared yet. Be the first!</p>
+        <p style="text-align: center; grid-column: 1 / -1; opacity: 0.5;">No stories shared yet. Be the first!</p>
         {% endfor %}
     </div>
 </div>

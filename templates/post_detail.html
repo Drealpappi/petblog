@@ -2,61 +2,109 @@
 {% block content %}
 
 <div class="post-detail-container">
-    <header class="post-header">
-        <div class="post-card-meta" style="justify-content: center; margin-bottom: 1rem;">
-            <span>By <strong>{{ post.author.username }}</strong></span> • 
-            <span>{{ post.created_at|date:"F d, Y" }}</span>
+
+    <!-- HEADER -->
+    <header class="post-header" style="text-align: center; margin-bottom: 2.5rem;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent);">
+                {{ post.author.username }}
+            </span>
+            <span style="color: var(--gray-400);">·</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">{{ post.created_at|date:"F d, Y" }}</span>
         </div>
         <h1 class="post-title-large">{{ post.title }}</h1>
     </header>
 
+    <!-- HERO IMAGE -->
     {% if post.image %}
-    <div class="post-hero-wrapper">
+    <div class="post-hero-wrapper" style="margin-bottom: 3rem;">
         <img src="{{ post.image.url }}" alt="{{ post.title }}">
     </div>
     {% endif %}
 
-    <div class="post-body-text">
-       <h1>{{ post.title }}</h1>
-        <p>{{ post.content }}</p>
-             {% include 'partials/like_button.html' with post=post liked=liked like_count=like_count %}
+    <!-- BODY -->
+    <div class="post-body-text">{{ post.content }}</div>
+
+    <!-- LIKE BAR -->
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; background: var(--gray-100); border-radius: var(--radius-lg); margin: 3rem 0;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div id="like-btn-{{ post.id }}">
+                {% include 'partials/like_button.html' with post=post liked=liked like_count=like_count %}
+            </div>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
+                {% if like_count == 0 %}
+                    Be the first to like this
+                {% else %}
+                    {{ like_count }} {{ like_count|pluralize:"person,people" }} liked this
+                {% endif %}
+            </span>
+        </div>
+        <span style="font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px;">
+            <i class="ti ti-message-circle" style="font-size: 15px;" aria-hidden="true"></i>
+            {{ comments.count }} {{ comments.count|pluralize:"comment" }}
+        </span>
     </div>
 
-    <hr style="opacity: 0.1; margin: 4rem 0;">
-
+    <!-- COMMENTS SECTION -->
     <section class="comment-section">
-        <h2 class="comments-header">
-            <span>💬</span> Comments ({{ comments.count }})
+
+        <h2 class="comments-header" style="font-size: 1.4rem; margin-bottom: 1.5rem;">
+            Comments
+            <span style="font-size: 1rem; font-weight: 500; color: var(--text-muted); font-family: 'Plus Jakarta Sans', sans-serif;">
+                ({{ comments.count }})
+            </span>
         </h2>
-    
+
+        <!-- COMMENT FORM -->
         {% if user.is_authenticated %}
-        <form method="post" class="glass-effect" style="padding: 2rem; margin-bottom: 3rem; border-radius: var(--radius-md);">
+        <form method="post" style="margin-bottom: 2.5rem; background: var(--gray-100); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--gray-200);">
             {% csrf_token %}
-            <h4 style="margin-bottom: 1rem; color: var(--accent);">Leave a response</h4>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent-mid); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--accent); flex-shrink: 0;">
+                    {{ user.username|first|upper }}
+                </div>
+                <span style="font-size: 0.875rem; font-weight: 600; color: var(--dark);">{{ user.username }}</span>
+            </div>
             {{ form.content }}
-            <button type="submit" class="btn-primary" style="margin-top: 1.5rem; width: auto; padding: 12px 30px;">
-                Comment
-            </button>
+            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                <button type="submit" class="btn" style="padding: 10px 24px;">
+                    Post comment
+                </button>
+            </div>
         </form>
         {% else %}
-        <div class="glass-effect" style="padding: 1.5rem; text-align: center; margin-bottom: 3rem;">
-            <p>Want to join the conversation? <a href="{% url 'login' %}" style="color: var(--accent); font-weight: 600;">Log in to comment</a></p>
+        <div style="text-align: center; padding: 2rem; background: var(--gray-100); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); margin-bottom: 2.5rem;">
+            <i class="ti ti-lock" style="font-size: 1.5rem; color: var(--gray-400); display: block; margin-bottom: 0.5rem;" aria-hidden="true"></i>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">Want to join the conversation?</p>
+            <a href="{% url 'login' %}" class="btn" style="padding: 9px 22px;">Log in to comment</a>
         </div>
         {% endif %}
 
+        <!-- COMMENTS LIST -->
         <div class="comments-list">
             {% for comment in comments %}
-            <div class="comment-card" style="background: white; border: 1px solid var(--gray-mid); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span style="font-weight: 700; color: var(--dark);">@{{ comment.author.username }}</span>
-                    <span style="font-size: 0.8rem; opacity: 0.6;">{{ comment.created_at|timesince }} ago</span>
+            <div class="comment-card" style="margin-bottom: 0.75rem; display: flex; gap: 12px; align-items: flex-start;">
+                <!-- Avatar -->
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 700; color: var(--gray-600); flex-shrink: 0; margin-top: 2px;">
+                    {{ comment.author.username|first|upper }}
                 </div>
-                <p style="line-height: 1.6; color: var(--text-body);">{{ comment.content }}</p>
+                <!-- Content -->
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;">
+                        <span style="font-size: 0.875rem; font-weight: 700; color: var(--dark);">{{ comment.author.username }}</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">{{ comment.created_at|timesince }} ago</span>
+                    </div>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-body); margin: 0;">{{ comment.content }}</p>
+                </div>
             </div>
             {% empty %}
-            <p style="text-align: center; opacity: 0.5; font-style: italic;">No comments yet. Start the story!</p>
+            <div style="text-align: center; padding: 3rem 0;">
+                <i class="ti ti-messages" style="font-size: 2rem; color: var(--gray-400); display: block; margin-bottom: 0.75rem;" aria-hidden="true"></i>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">No comments yet. Start the story!</p>
+            </div>
             {% endfor %}
         </div>
+
     </section>
 </div>
 

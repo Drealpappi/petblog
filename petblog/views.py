@@ -14,6 +14,7 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.db import transaction
 from .forms import CommentForm
+from django.http import JsonResponse
 
 # Create your views here.
 @transaction.atomic
@@ -24,13 +25,14 @@ def register(request):
             user = form.save()
             auth_login(request, user)
             return redirect('home')
+        # no else needed — falls through to render with the invalid form
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
         
 def home(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().prefetch_related('likes', 'comments').order_by('-created_at')
     return render(request, 'home.html', {'posts': posts})
 
 def login(request):
@@ -92,7 +94,7 @@ def post_detail(request, post_id):
     like_count = post.likes.count()
     liked = False
     if request.user.is_authenticated:
-        liked = post.likes.filter(user=request.user).exists()
+        liked = post.likes.filter(id=request.user.id).exists()
 
     if request.method == 'POST' and request.user.is_authenticated:
         form = CommentForm(request.POST)
@@ -109,28 +111,28 @@ def post_detail(request, post_id):
         'post': post,
         'comments': comments,
         'form': form,
-        'liked': liked,
+        'likes': liked,
         'like_count': like_count 
     })
-
 @login_required
 def toggle_like(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    like_qs = like.objects.filter(user= request.user, post=post)
-    if like_qs.exists():
-        like_qs.delete()
+    post = get_object_or_404(Post, id=post_id)
+    
+    # Using .exists()
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
         liked = False
     else:
-        like.objects.create(user=request.user, post=post)
+        post.likes.add(request.user)
         liked = True
+    
     context = {
         'post': post,
-        'liked': liked,
-        'total_likes': post.likes.count()
+        'likes': liked,
+        'like_count': post.likes.count(),
     }
+    # To ensure this template ONLY contains the heart icon and the number
     return render(request, 'partials/like_button.html', context)
-
-
 
 @login_required
 def create_post(request):
